@@ -2,3 +2,7 @@
   <canvas #frontCanvas id="frontCanvas" width="2560" height="320"></canvas>
   <canvas #backCanvas id="backCanvas" width="2560" height="320"></canvas>
 </div>
+<p>
+  <input id="msg" name="msg" #msg type="text">
+  <button (click)="afficher(ctxFront, msg.value)">Afficher</button>
+</p>
