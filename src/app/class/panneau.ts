@@ -158,3 +158,40 @@ export class CaractereLed {
 
   }
 }
+
+export class ChaineLed {
+  chaine: string;
+  positionX: number;
+  positionY: number;
+  couleur: string;
+  rayon: number;
+  caractereLed: CaractereLed[] = [];
+
+  constructor(
+    chaine: string,
+    positionX:number,
+    positionY:number,
+    couleur:string
+  ) {
+    this.chaine = chaine;
+    this.positionX = positionX;
+    this.positionY = positionY;
+    this.couleur = couleur;
+    this.rayon = 5;
+
+    // On cree le message
+    const message = this.chaine.split('');
+    let i = 0;
+    for(let letter of message) {
+      this.caractereLed.push(new CaractereLed(letter, positionX+i, positionY, this.couleur));
+      i+=22;
+    }
+  }
+
+  afficher(tailleCaractere: 'grand'|'moyen'|'petit', ctx: CanvasRenderingContext2D) {
+    for(let caractereOn of this.caractereLed) {
+      caractereOn.afficher('grand',ctx);
+    }
+  }
+
+}

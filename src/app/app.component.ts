@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { CaractereLed, CarreLed, Led } from './class/panneau';
+import { CaractereLed, CarreLed, ChaineLed, Led } from './class/panneau';
 
 @Component({
   selector: 'app-root',
@@ -18,10 +18,7 @@ export class AppComponent implements AfterViewInit{
   ctxBack!: CanvasRenderingContext2D;
   hBack: any;
   wBack: any;
-  caractereLed0 = new CaractereLed('0', 1, 3, 'yellow');
-  caractereLed1 = new CaractereLed('1', 28, 3, 'yellow');
-  caractereLed: CaractereLed[] = [];
-  //carreLed = new CarreLed(1,1,4,5,'yellow');
+  chaineLed!: ChaineLed;
 
   ngAfterViewInit(): void {
 
@@ -33,30 +30,19 @@ export class AppComponent implements AfterViewInit{
     this.hBack = this.backCanvas.nativeElement.height;
     this.wBack = this.backCanvas.nativeElement.width;
 
-    this.draw();
+    this.fondNoir(this.ctxBack, this.wBack, this.hBack);
   }
 
-  draw() {
+  fondNoir(ctx: CanvasRenderingContext2D, width: any, height: any) {
     // Fond noir
-    this.ctxBack.fillStyle = 'black';
-    this.ctxBack.fillRect(0, 0, this.wBack, this.hBack);
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, width, height);
+  }
 
-    // On cree le message
-    const message = 'SEVENPARK'.split('');
-    let i = 1;
-    for(let letter of message) {
-      this.caractereLed.push(new CaractereLed(letter, i, 3, 'yellow'));
-      i+=22;
-    }
-
-    // On affiche le message
-    for(let caractereOn of this.caractereLed) {
-      caractereOn.afficher('grand',this.ctxFront);
-    }
-
-    //this.carreLed.fill(this.ctxFront);
-    // this.ctxFront.clearRect(0, 0, this.wFront, this.hFront);
-
+  afficher(ctx: CanvasRenderingContext2D, message: string) {
+    ctx.clearRect(0, 0, this.wFront, this.hFront);
+    this.chaineLed = new ChaineLed(message, 1, 3, 'yellow');
+    this.chaineLed.afficher('grand', ctx);
   }
 
 }
