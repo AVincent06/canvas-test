@@ -1,0 +1,18 @@
+#stage {
+  width: 640px;
+  height: 320px;
+  position: relative;
+  /* border: 2px solid black; */
+}
+
+canvas {
+  position: absolute;
+}
+
+#frontCanvas {
+  z-index: 2;
+}
+
+#backCanvas {
+  z-index: 1;
+}
