@@ -1,8 +1,47 @@
-<div id="stage">
-  <canvas #frontCanvas id="frontCanvas" width="2560" height="320"></canvas>
-  <canvas #backCanvas id="backCanvas" width="2560" height="320"></canvas>
+<div id="stage" [ngStyle]="{'height': canvas_hauteur, 'width': canvas_longueur}">
+  <canvas #frontCanvas id="frontCanvas" width="{{canvas_longueur}}" height="{{ canvas_hauteur }}"></canvas>
+  <!-- <canvas #backCanvas id="backCanvas" width="{{canvas_longueur}}" height="{{ canvas_hauteur }}"></canvas> -->
 </div>
-<p>
-  <input id="msg" name="msg" #msg type="text">
-  <button (click)="afficher(ctxFront, msg.value)">Afficher</button>
-</p>
+<div>
+  <p>
+    <mat-form-field>
+      <mat-label>Texte à afficher</mat-label>
+      <input matInput id="msg" name="msg" #msg type="text">
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="afficher(ctxFront, msg.value, espacement)">Afficher</button>
+  </p>
+  <p>
+    <label>Résolution écran: </label>
+      <mat-radio-group name="resolution" id="resolution" #resolution (change)="onResolutionChange($event)">
+        <mat-radio-button value="5">2560</mat-radio-button>
+        <mat-radio-button value="3" [checked]="true">1920</mat-radio-button>
+        <mat-radio-button value="2">1440</mat-radio-button>
+      </mat-radio-group>
+  </p>
+  <p>
+    <label>Taille des caractères: </label>
+      <mat-radio-group name="taille" id="taille" #taille (change)="onSizeChange($event)">
+        <mat-radio-button value="grand" [checked]="true">Grand</mat-radio-button>
+        <mat-radio-button value="moyen">Moyen</mat-radio-button>
+        <mat-radio-button value="petit">Petit</mat-radio-button>
+      </mat-radio-group>
+  </p>
+  <p>
+    <label>Espace inter-caractère: </label>
+      <mat-radio-group name="espace" id="espace" #espace (change)="onEspacementChange($event)">
+        <mat-radio-button value="2" [checked]="true">2</mat-radio-button>
+        <mat-radio-button value="1">1</mat-radio-button>
+      </mat-radio-group>
+  </p>
+  <p>
+    <mat-form-field>
+      <mat-label>Couleur:</mat-label>
+      <mat-select [(value)]="couleurSelectionnee" (selectionChange)="onCouleurChange()">
+        <mat-option *ngFor="let couleur of couleurs" [value]="couleur.value">
+          {{couleur.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <span id="apercuCouleur" [ngStyle]="{'background-color': couleurSelectionnee}"></span>
+  </p>
+</div>

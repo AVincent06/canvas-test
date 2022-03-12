@@ -98,7 +98,6 @@ export class CarreLed {
   }
 
   fill(ctx: CanvasRenderingContext2D) {
-    console.log("test");
     for(let y=this.positionY; y<this.positionY+this.taille; y++) {
       for(let x=this.positionX; x<this.positionX+this.taille; x++) {
         ctx.beginPath();
@@ -121,41 +120,42 @@ export class CaractereLed {
     caractere: string,
     positionX:number,
     positionY:number,
-    couleur:string
+    couleur:string,
+    rayon: number
   ) {
     this.caractere = caractere;
     this.positionX = positionX;
     this.positionY = positionY;
     this.couleur = couleur;
-    this.rayon = 5;
+    this.rayon = rayon;
   }
 
   afficher(tailleCaractere: 'grand'|'moyen'|'petit', ctx: CanvasRenderingContext2D) {
     const ON = '1';
-    const GRAND = 4;
 
-    switch(tailleCaractere) {
-      case 'grand': {
-        const trame = keyboard.get(this.caractere)!.split('');
-        const LARGEUR = 5;
-        let x = this.positionX;
-        let y = this.positionY;
-        for(let i=0; i<trame.length; i++) {
-          if(trame[i] == ON) {
-            const carreLed = new CarreLed(x, y, GRAND, this.rayon, this.couleur);
-            carreLed.fill(ctx);
-          }
-          if(x<this.positionX+GRAND*(LARGEUR-1)) {
-            x += GRAND;
-          } else {
-            x = this.positionX;
-            y += GRAND;
-          }
-        }
-        break;
+    const tailleCorrespondante = new Map([
+      ['grand', 4],
+      ['moyen', 2],
+      ['petit', 1]
+    ]);
+    const taille: number = tailleCorrespondante.get(tailleCaractere)!;
+
+    const trame = keyboard.get(this.caractere)!.split('');
+    const LARGEUR = 5;
+    let x = this.positionX;
+    let y = this.positionY;
+    for(let i=0; i<trame.length; i++) {
+      if(trame[i] == ON) {
+        const carreLed = new CarreLed(x, y, taille, this.rayon, this.couleur);
+        carreLed.fill(ctx);
+      }
+      if(x<this.positionX+taille*(LARGEUR-1)) {
+        x += taille;
+      } else {
+        x = this.positionX;
+        y += taille;
       }
     }
-
   }
 }
 
@@ -169,28 +169,39 @@ export class ChaineLed {
 
   constructor(
     chaine: string,
-    positionX:number,
-    positionY:number,
-    couleur:string
+    positionX: number,
+    positionY: number,
+    couleur: string,
+    rayon: number
   ) {
     this.chaine = chaine;
     this.positionX = positionX;
     this.positionY = positionY;
     this.couleur = couleur;
-    this.rayon = 5;
+    this.rayon = rayon;
+  }
+
+  afficher(tailleCaractere: 'grand'|'moyen'|'petit', espacement: number,  ctx: CanvasRenderingContext2D) {
+    const tailleCorrespondante = new Map([
+      ['grand', 4],
+      ['moyen', 2],
+      ['petit', 1]
+    ]);
+    const taille: number = tailleCorrespondante.get(tailleCaractere)!;
+    const LARGEUR = 5;
 
     // On cree le message
     const message = this.chaine.split('');
     let i = 0;
     for(let letter of message) {
-      this.caractereLed.push(new CaractereLed(letter, positionX+i, positionY, this.couleur));
-      i+=22;
+      this.caractereLed.push(new CaractereLed(letter, this.positionX+i, this.positionY, this.couleur, this.rayon));
+      i+=(taille*LARGEUR)+espacement;
     }
-  }
 
-  afficher(tailleCaractere: 'grand'|'moyen'|'petit', ctx: CanvasRenderingContext2D) {
+
+    // On fait apparaitre le message
     for(let caractereOn of this.caractereLed) {
-      caractereOn.afficher('grand',ctx);
+      caractereOn.afficher(tailleCaractere,ctx);
     }
   }
 
