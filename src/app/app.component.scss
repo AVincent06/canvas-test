@@ -1,23 +1,36 @@
 /* Taille du panneau */
-$diametre-led-en-pixel: 10px;
-$largeur: 256*$diametre-led-en-pixel;
-$hauteur: 32*$diametre-led-en-pixel;
+// $diametre-led-en-pixel: 10px;
+// $largeur: 256*$diametre-led-en-pixel;
+// $hauteur: 32*$diametre-led-en-pixel;
 
-#stage {
-  position: relative;
-  height: $hauteur;
-  width: $largeur;
-  /* border: 2px solid black; */
+// #stage {
+//   position: relative;
+//   // height: $hauteur;
+//   // width: $largeur;
+//   /* border: 2px solid black; */
+// }
+
+// canvas {
+//   position: absolute;
+// }
+
+// #frontCanvas {
+//   z-index: 2;
+// }
+
+// #backCanvas {
+//   z-index: 1;
+// }
+
+.mat-radio-button {
+  margin: 0 12px;
 }
 
-canvas {
-  position: absolute;
-}
-
-#frontCanvas {
-  z-index: 2;
-}
-
-#backCanvas {
-  z-index: 1;
+#apercuCouleur {
+  border: 1px solid black;
+  border-radius: 10px;
+  display: inline-block;
+  height: 20px;
+  margin: 0 12px;
+  width: 20px;
 }
