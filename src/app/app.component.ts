@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { MatRadioChange } from '@angular/material/radio';
-import { CaractereLed, CarreLed, ChaineLed, Led } from './class/panneau';
+import { CaractereLed, CarreLed, ChaineLed, Led, LogoLed } from './class/panneau';
 
 //const LED_DIAMETRE = 10 // pour une définition 2560
 const LED_DIAMETRE = 6 // pour une définition 1920
@@ -62,6 +62,9 @@ export class AppComponent implements AfterViewInit{
     {value: 'aqua', viewValue: 'aqua'},
   ];
   couleurSelectionnee: string = 'white';
+  logoLed!: LogoLed;
+  positionHorizontal: number = 1; // Curseur sur le panneau
+  isLogo: boolean = false;
 
   ngAfterViewInit(): void {
 
@@ -83,10 +86,22 @@ export class AppComponent implements AfterViewInit{
   }
 
   afficher(ctx: CanvasRenderingContext2D, message: string, espacement: number) {
-    this.bufferMessage = message;
     this.fondNoir(this.ctxFront, this.canvas_longueur, this.canvas_hauteur);
-    this.chaineLed = new ChaineLed(message, 1, 3, this.couleurSelectionnee, this.led_rayon);
+    if(this.isLogo) {
+      this.afficherLogo();
+    } else {
+      this.positionHorizontal = 1;
+    }
+    this.bufferMessage = message;
+    this.chaineLed = new ChaineLed(message, this.positionHorizontal, 3, this.couleurSelectionnee, this.led_rayon);
     this.chaineLed.afficher(this.tailleCaractere, espacement, ctx);
+  }
+
+  afficherLogo() {
+    this.positionHorizontal = 1;
+    this.logoLed = new LogoLed(0, this.positionHorizontal);
+    this.logoLed.afficher(this.ctxFront, this.led_rayon);
+    this.positionHorizontal += 32;
   }
 
   onResolutionChange(event: MatRadioChange): void {
@@ -110,4 +125,8 @@ export class AppComponent implements AfterViewInit{
     this.afficher(this.ctxFront, this.bufferMessage, this.espacement);
   }
 
+  onClickLogo() {
+    this.isLogo = !this.isLogo;
+    this.afficher(this.ctxFront, this.bufferMessage, this.espacement);
+  }
 }

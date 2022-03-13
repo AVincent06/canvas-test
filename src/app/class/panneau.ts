@@ -40,6 +40,29 @@ const keyboard = new Map([
   ['♥', '00000010101111111111011100010000000']
 ]);
 
+const color = new Map([
+  ['0', 'black'],
+  ['1', 'silver'],
+  ['2', 'gray'],
+  ['3', 'white'],
+  ['4', 'maroon'],
+  ['5', 'red'],
+  ['6', 'purple'],
+  ['7', 'fuchsia'],
+  ['8', 'green'],
+  ['9', 'lime'],
+  ['A', 'olive'],
+  ['B', 'yellow'],
+  ['C', 'navy'],
+  ['D', 'blue'],
+  ['E', 'teal'],
+  ['F', 'aqua']
+]);
+
+const logo = new Map([
+  ['0', '333333333333333333333333333333333DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD33DDDDDDDDDDDD333333DDDDDDDDDDDD33DDDDDDDDDD3333DD3333DDDDDDDDDD33DDDDDDDD33333DDDD33333DDDDDDDD33DDDDDDD33333DDDDDD33333DDDDDDD33DDDDDD333333DDDDDD333333DDDDDD33DDDDD33333333DDDD33333333DDDDD33DDDD3333333333DD3333333333DDDD33DDD333333333333333333333333DDD33DDD333333DDDDDDDDD333333333DDD33DD333333333DDDDDDD3333333333DD33DD3333333333DDDDDD3333333333DD33D33333333333DDDDDD33333333333D33D33333333333DDDDDD33333333333D33D33333333333DDDDDD33333333333D33D33333333333DDDDDD33333333333D33D33333333333DDDDDD33333333333D33D33333333333DDDDDD33333333333D33DD3333333333DDDDDD3333333333DD33DD3333333333DDDDDD3333333333DD33DDD333333333DDDDDD333333333DDD33DDD333333333DDDDDD333333333DDD33DDDD3333333DDDDDDDD3333333DDDD33DDDDD3333DDDDDDDDDDDD3333DDDDD33DDDDDD333333333333333333DDDDDD33DDDDDDD3333333333333333DDDDDDD33DDDDDDDD33333333333333DDDDDDDD33DDDDDDDDDD3333333333DDDDDDDDDD33DDDDDDDDDDDD333333DDDDDDDDDDDD33DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD333333333333333333333333333333333'],
+]);
+
 export class Led {
   x: number;
   y: number;
@@ -205,4 +228,40 @@ export class ChaineLed {
     }
   }
 
+}
+
+export class LogoLed {
+  idLogo: number;
+  positionX: number;
+  marginLeft?: number;
+  marginRight?: number;
+
+  constructor(
+    idLogo: number,
+    positionX: number,
+    marginLeft?: number,
+    marginRight?: number,
+  ) {
+    this.idLogo = idLogo;
+    this.positionX = positionX;
+    this.marginLeft = marginLeft;
+    this.marginRight = marginRight
+  }
+
+  afficher(ctx: CanvasRenderingContext2D, rayon: number) {
+    const matrix = logo.get('0')?.split('');
+    let i = 0;
+    let positionY=1;
+    let taille = 32;
+
+    for(let y=positionY; y<positionY+taille; y++) {
+      for(let x=this.positionX; x<this.positionX+taille; x++) {
+        ctx.beginPath();
+        ctx.arc(rayon*(x*2-1), rayon*(y*2-1), rayon, 0, Math.PI*2, false);
+        ctx.fillStyle = color.get(matrix![i++])!;
+        ctx.fill();
+      }
+    }
+
+  }
 }
